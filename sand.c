@@ -85,18 +85,18 @@ static void set_scene_draw(Canvas* canvas){
     for (int i = 0; i < WIDTH; i++){
         for (int j = 0; j < HEIGHT; j++){
             if(currentCells[i][j]==1){
-                draw_rect(canvas, i*gridSize, j*gridSize,gridSize,gridSize);
+                draw_rect(canvas, i*gridSize, j*gridSize,gridSize*brushSize,gridSize*brushSize);
             }
         }
     }
     if(currentCells[pointerX][pointerY]==1){
-        draw_rect(canvas, pointerX*gridSize-1, pointerY*gridSize,gridSize+2,gridSize);
-        draw_rect(canvas, pointerX*gridSize, pointerY*gridSize-1,gridSize,gridSize+2);
+        draw_rect(canvas, pointerX*gridSize-1, pointerY*gridSize,gridSize*brushSize+2,gridSize*brushSize);
+        draw_rect(canvas, pointerX*gridSize, pointerY*gridSize-1,gridSiz*brushSizee,gridSize*brushSize+2);
         canvas_set_color(canvas,ColorWhite);
-        draw_rect(canvas, pointerX*gridSize, pointerY*gridSize,gridSize,gridSize);
+        draw_rect(canvas, pointerX*gridSize, pointerY*gridSize,gridSize*brushSize,gridSize*brushSize);
         canvas_set_color(canvas,ColorBlack);
     }else{
-        draw_rect(canvas, pointerX*gridSize, pointerY*gridSize,gridSize,gridSize);
+        draw_rect(canvas, pointerX*gridSize, pointerY*gridSize,gridSize*brushSize,gridSize*brushSize);
     }
 }
 
