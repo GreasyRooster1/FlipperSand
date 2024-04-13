@@ -61,8 +61,8 @@ static bool placeFree(int x,int y){
 
 static void simulate(){
     memcpy(previousCells, currentCells, WIDTH*HEIGHT*sizeof(bool));
-    for (int i = 0; i < WIDTH; i++){
-        for (int j = 0; j < HEIGHT; j++){
+    for (int i = 0; i < borderX; i++){
+        for (int j = 0; j < borderY; j++){
             if(previousCells[i][j]==1){
                 if(placeFree(i,j+1)){
                     currentCells[i][j]=0;
@@ -192,7 +192,7 @@ int32_t sand_app(void* p) {
                 }
             }
         }
-        if(event.type==InputTypePress){
+        if(event.type==InputTypePress||event.type==InputTypeRepeat){
             if(event.key == InputKeyUp) {
                 pointerY-=1;
             }
