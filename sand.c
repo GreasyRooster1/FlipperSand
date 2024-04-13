@@ -92,18 +92,6 @@ static void set_scene_draw(Canvas* canvas){
     }
 }
 
-static void simulate_scene_draw(Canvas* canvas){
-    draw_rect(canvas,0,0,WIDTH,HEIGHT);
-    canvas_set_color(canvas,ColorWhite);
-    for (int i = 0; i < WIDTH; i++){
-        for (int j = 0; j < HEIGHT; j++){
-            if(currentCells[i][j]==1){
-                draw_rect(canvas, i*gridSize, j*gridSize,gridSize,gridSize);
-            }
-        }
-    }
-}
-
 static void sand_draw_callback(Canvas* canvas, void* ctx) {
     UNUSED(ctx);
     readyForInput = true;
@@ -126,10 +114,8 @@ static void sand_draw_callback(Canvas* canvas, void* ctx) {
 
     if(simulating){
         simulate();
-        simulate_scene_draw(canvas);
-    }else{
-        set_scene_draw(canvas);
     }
+    set_scene_draw(canvas);
 }
 
 static void sand_input_callback(InputEvent* input_event, void* ctx) {
