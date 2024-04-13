@@ -6,6 +6,7 @@
 #define HEIGHT 64
 
 int gridSize = 2;
+int brushSize = 2;
 bool readyForInput = false;
 bool simulating = false;
 bool splash = true;
@@ -30,7 +31,6 @@ static void setup_game(){
     //set all cells to 0
     for (int i = 0; i < WIDTH; i++){
         for (int j = 0; j < HEIGHT; j++){
-            currentCells[i][j] = 0;
             currentCells[i][j] = 0;
             previousCells[i][j] = 0;
         }
@@ -108,15 +108,16 @@ static void sand_draw_callback(Canvas* canvas, void* ctx) {
     canvas_clear(canvas);
     
     if(splash){
-        char snum[5];
-        itoa(gridSize, snum, 10);
+        char gridNum[5];
+        itoa(gridSize, gridNum, 10);
+        char brushNum[5];
+        itoa(brushSize, brushNum, 10);
 
         canvas_draw_icon(canvas,0,0,&I_Splash_128x64);
-        canvas_draw_str(canvas, 85,10,"Scale:");
-        canvas_draw_str(canvas, 116,10,snum);
-        canvas_draw_str(canvas, 85,18,"Use up");
-        canvas_draw_str(canvas, 85,26,"and down");
-        canvas_draw_str(canvas, 85,34,"to change");
+        canvas_draw_str(canvas, 85,10,"Brush:");
+        canvas_draw_str(canvas, 116,10,brushNum);
+        canvas_draw_str(canvas, 85,18,"Scale:");
+        canvas_draw_str(canvas, 116,18,gridNum);
         return;
     }
 
@@ -134,11 +135,12 @@ static void sand_input_callback(InputEvent* input_event, void* ctx) {
 }
 
 static void flip(){
-    if(currentCells[pointerX][pointerY]){
-        currentCells[pointerX][pointerY] = 0;
-    }else{
-        currentCells[pointerX][pointerY] = 1;
+    for(int i=0;i<brushSize;i++){
+        for(int j=0;j<brushSize;j++){
+            currentCells[pointerX+i][pointerY+j] = !currentCells[pointerX+i][pointerY+j];
+        }
     }
+    
 }
 
 int32_t sand_app(void* p) {
