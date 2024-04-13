@@ -67,6 +67,14 @@ static void simulate(){
                 if(placeFree(i,j+1)){
                     currentCells[i][j]=0;
                     currentCells[i][j+1]=1;
+                }else{
+                    if(placeFree(i+1,j+1)){
+                        currentCells[i][j]=0;
+                        currentCells[i+1][j+1]=1;
+                    }else ifplaceFree(i-1,j+1)(){
+                        currentCells[i][j]=0;
+                        currentCells[i-1][j+1]=1;
+                    }
                 }
             }
         }
