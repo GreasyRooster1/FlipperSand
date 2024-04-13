@@ -5,8 +5,8 @@
 #define WIDTH 128
 #define HEIGHT 64
 
-int gridSize = 2;
-int brushSize = 2;
+int gridSize = 1;
+int brushSize = 4;
 bool readyForInput = false;
 bool simulating = false;
 bool splash = true;
@@ -89,8 +89,7 @@ static void set_scene_draw(Canvas* canvas){
             }
         }
     }
-    canvas_set_color(canvas,ColorXOR);
-    draw_rect(canvas, pointerX*gridSize, pointerY*gridSize,gridSize*brushSize,gridSize*brushSize);
+    canvas_draw_frame(canvas, pointerX*gridSize -1, pointerY*gridSize -1,gridSize*brushSize +2,gridSize*brushSize +2);
 }
 
 static void sand_draw_callback(Canvas* canvas, void* ctx) {
