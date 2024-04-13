@@ -91,7 +91,7 @@ static void set_scene_draw(Canvas* canvas){
     }
     if(currentCells[pointerX][pointerY]==1){
         draw_rect(canvas, pointerX*gridSize-1, pointerY*gridSize,gridSize*brushSize+2,gridSize*brushSize);
-        draw_rect(canvas, pointerX*gridSize, pointerY*gridSize-1,gridSiz*brushSizee,gridSize*brushSize+2);
+        draw_rect(canvas, pointerX*gridSize, pointerY*gridSize-1,gridSize*brushSize,gridSize*brushSize+2);
         canvas_set_color(canvas,ColorWhite);
         draw_rect(canvas, pointerX*gridSize, pointerY*gridSize,gridSize*brushSize,gridSize*brushSize);
         canvas_set_color(canvas,ColorBlack);
