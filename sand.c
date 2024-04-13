@@ -85,7 +85,7 @@ static void set_scene_draw(Canvas* canvas){
     for (int i = 0; i < WIDTH; i++){
         for (int j = 0; j < HEIGHT; j++){
             if(currentCells[i][j]==1){
-                draw_rect(canvas, i*gridSize, j*gridSize,gridSize*brushSize,gridSize*brushSize);
+                draw_rect(canvas, i*gridSize, j*gridSize,gridSize,gridSize);
             }
         }
     }
