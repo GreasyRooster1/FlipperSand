@@ -89,7 +89,7 @@ static void set_scene_draw(Canvas* canvas){
             }
         }
     }
-    canvas_set_color(canvas,ColorXor);
+    canvas_set_color(canvas,ColorXOR);
     draw_rect(canvas, pointerX*gridSize, pointerY*gridSize,gridSize*brushSize,gridSize*brushSize);
 }
 
