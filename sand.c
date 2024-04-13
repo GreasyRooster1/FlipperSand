@@ -114,10 +114,13 @@ static void sand_draw_callback(Canvas* canvas, void* ctx) {
         itoa(brushSize, brushNum, 10);
 
         canvas_draw_icon(canvas,0,0,&I_Splash_128x64);
-        canvas_draw_str(canvas, 85,10,"Brush:");
-        canvas_draw_str(canvas, 116,10,brushNum);
-        canvas_draw_str(canvas, 85,18,"Scale:");
-        canvas_draw_str(canvas, 116,18,gridNum);
+        canvas_draw_str(canvas, 85,10,"Scale:");
+        canvas_draw_str(canvas, 116,10,gridNum);
+        canvas_draw_str(canvas, 85,18,"Brush:");
+        canvas_draw_str(canvas, 116,18,brushNum);
+        canvas_draw_str(canvas, 85,26,"Use arrows");
+        canvas_draw_str(canvas, 85,34,"to adjust");
+        canvas_draw_str(canvas, 85,42,"values.");
         return;
     }
 
