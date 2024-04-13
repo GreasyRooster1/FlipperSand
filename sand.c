@@ -8,7 +8,6 @@
 int gridSize = 2;
 bool readyForInput = false;
 bool simulating = false;
-bool running = false;
 bool splash = true;
 
 int pointerX = 64;
@@ -18,8 +17,8 @@ int borderX = 128;
 int borderY = 64;
 
 //allocate for the maximum resolution
-bool setCells[128][64] = {};
 bool currentCells[128][64] = {};
+bool previousCells[128][64] = {};
 
 static void setup_game(){
     pointerX = 64/gridSize;
@@ -28,11 +27,12 @@ static void setup_game(){
     borderX = 128/gridSize;
     borderY = 64/gridSize;
 
-    //set all setCells to 0
+    //set all cells to 0
     for (int i = 0; i < WIDTH; i++){
         for (int j = 0; j < HEIGHT; j++){
-            setCells[i][j] = 0;
             currentCells[i][j] = 0;
+            currentCells[i][j] = 0;
+            previousCells[i][j] = 0;
         }
     }
 }
@@ -46,18 +46,28 @@ static void draw_rect(Canvas* const canvas,int x,int y,int w,int h){
 }
 
 static void setupSimulation(){
-    memcpy(currentCells, setCells, WIDTH*HEIGHT*sizeof(bool));
-    running = false;
+    memcpy(previousCells, currentCells, WIDTH*HEIGHT*sizeof(bool));
+}
+
+static bool placeFree(int x,int y){
+    if(y>borderY-1||y<0){
+        return false;
+    }
+    if(x>borderX-1||x<0){
+        return false;
+    }
+    return !previousCells[x][y];
 }
 
 static void simulate(){
+    memcpy(previousCells, currentCells, WIDTH*HEIGHT*sizeof(bool));
     for (int i = 0; i < WIDTH; i++){
         for (int j = 0; j < HEIGHT; j++){
-            if(currentCells[i][j]==1){
-                //if(currentCells[i][j+1]==0){
+            if(previousCells[i][j]==1){
+                if(placeFree(i,j+1)){
                     currentCells[i][j]=0;
                     currentCells[i][j+1]=1;
-                //}
+                }
             }
         }
     }
@@ -66,12 +76,12 @@ static void simulate(){
 static void set_scene_draw(Canvas* canvas){
     for (int i = 0; i < WIDTH; i++){
         for (int j = 0; j < HEIGHT; j++){
-            if(setCells[i][j]==1){
+            if(currentCells[i][j]==1){
                 draw_rect(canvas, i*gridSize, j*gridSize,gridSize,gridSize);
             }
         }
     }
-    if(setCells[pointerX][pointerY]==1){
+    if(currentCells[pointerX][pointerY]==1){
         draw_rect(canvas, pointerX*gridSize-1, pointerY*gridSize,gridSize+2,gridSize);
         draw_rect(canvas, pointerX*gridSize, pointerY*gridSize-1,gridSize,gridSize+2);
         canvas_set_color(canvas,ColorWhite);
@@ -115,9 +125,7 @@ static void sand_draw_callback(Canvas* canvas, void* ctx) {
     }
 
     if(simulating){
-        if(running){
-            simulate();
-        }
+        simulate();
         simulate_scene_draw(canvas);
     }else{
         set_scene_draw(canvas);
@@ -132,10 +140,10 @@ static void sand_input_callback(InputEvent* input_event, void* ctx) {
 }
 
 static void flip(){
-    if(setCells[pointerX][pointerY]){
-        setCells[pointerX][pointerY] = 0;
+    if(currentCells[pointerX][pointerY]){
+        currentCells[pointerX][pointerY] = 0;
     }else{
-        setCells[pointerX][pointerY] = 1;
+        currentCells[pointerX][pointerY] = 1;
     }
 }
 
@@ -185,37 +193,27 @@ int32_t sand_app(void* p) {
             }
             if(event.type==InputTypeShort){
                 simulating = !simulating;
-                if(simulating == true){
+                if(simulating){
                     setupSimulation();
                 }
             }
         }
         if(event.type==InputTypePress){
-            if(!simulating){
-                if(event.key == InputKeyUp) {
-                    pointerY-=1;
-                }
-                if(event.key == InputKeyDown) {
-                    pointerY+=1;
-                }
-                if(event.key == InputKeyLeft) {
-                    pointerX-=1;
-                }
-                if(event.key == InputKeyRight) {
-                    pointerX+=1;
-                }
-                if(event.key == InputKeyOk) {
-                    flip();
-                }
-            }else{
-                if(event.key == InputKeyRight && !running){
-                    simulate();
-                }
-                if(event.key == InputKeyOk) {
-                    running = !running;
-                }
+            if(event.key == InputKeyUp) {
+                pointerY-=1;
             }
-            
+            if(event.key == InputKeyDown) {
+                pointerY+=1;
+            }
+            if(event.key == InputKeyLeft) {
+                pointerX-=1;
+            }
+            if(event.key == InputKeyRight) {
+                pointerX+=1;
+            }
+            if(event.key == InputKeyOk) {
+                flip();
+            }
         }
     }
 
