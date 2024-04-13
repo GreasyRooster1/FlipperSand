@@ -179,6 +179,12 @@ int32_t sand_app(void* p) {
                 if(event.key == InputKeyDown) {
                     gridSize--;
                 }
+                if(event.key == InputKeyRight) {
+                    brushSize++;
+                }
+                if(event.key == InputKeyLeft) {
+                    brushSize--;
+                }
             }
             continue;
         }
